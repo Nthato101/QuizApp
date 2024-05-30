@@ -1,0 +1,115 @@
+{% extends "./base/base.html" %} 
+{% load static %}
+
+{% block nav %}
+<ul>
+  <li><a href={% url "homepage" %}>Home</a></li>
+  {% if user.is_authenticated %}
+  <li><a class='active' href={% url "pre_quiz" %}>Quiz</a></li>
+  <li><a href={% url "logout" %}>Logout</a></li>
+  {% else %}
+  <li><a href={% url "login" %}>Login</a></li>
+  <li><a href={% url 'register' %}>Register</a></li>
+  {% endif %}
+</ul>
+{% endblock  %}
+
+
+{% block main %}
+
+<main id="main">
+
+  <!-- ======= Blue Section ======= -->
+  <div class="hero-section inner-page">
+    <div class="wave">
+
+      <svg width="1920px" height="265px" viewBox="0 0 1920 265" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="Apple-TV" transform="translate(0.000000, -402.000000)" fill="#FFFFFF">
+            <path d="M0,439.134243 C175.04074,464.89273 327.944386,477.771974 458.710937,477.771974 C654.860765,477.771974 870.645295,442.632362 1205.9828,410.192501 C1429.54114,388.565926 1667.54687,411.092417 1920,477.771974 L1920,667 L1017.15166,667 L0,667 L0,439.134243 Z" id="Path"></path>
+          </g>
+        </g>
+      </svg>
+
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-12">
+          <div class="row justify-content-center">
+            <div class="col-md-7 text-center hero-text">
+              <h1 data-aos="fade-up" data-aos-delay="">Quiz</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ======= Quiz Section ======= -->
+  <section class="section border-top border-bottom text-center">
+    <div class="container" data-aos='fade-up'  data-aos-delay="750">
+      {% if player.has_played %}
+      <div class="card mx-auto col-lg-8" >
+        <div class="card-body" >
+          <h5 class="text-center card-title">{{player.first_name}}, you have completed the quiz and scored {{player.score}}/8</h5>
+          <p> See where you rank on the leaderboard by clicking the button below </p>
+            <div class='row custom-control btn-group-vertical' role='group' name='answer' id='answer' style="padding-top: 20px; padding-bottom: 20px;" aria-label="Vertical radio toggle button group">
+              <div>
+                <div>
+                  <a href={% url "homepage" %}><button type='button' class="btn btn-primary">Leaderboard</button><a>
+                </div>
+            </div>
+          </div>
+      </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+      {% else %}
+      <div class="card mx-auto col-lg-8" >
+          <div class="card-body" >
+            <h5 class="text-center card-title">Quiz Rules</h5>
+              <div class='row custom-control btn-group-vertical' role='group' name='answer' id='answer' style="padding-top: 20px; padding-bottom: 20px;" aria-label="Vertical radio toggle button group">
+                <div>
+                  <div class='List-group text-center mx-auto'>
+                    <ul>
+                      <li> Do not exit the browser once the quiz starts </li>
+                      <li> You have a time limit for each question before , it auto submits.</li>
+                      <li> The quiz may only be taken once</li>
+                      <li> If you haven't already taken the quiz you can begin the quiz by clicking the button below</li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <a href={% url "quiz" %}><button type='button' id='next'  class="btn btn-primary">Start Quiz</button><a>
+                  </div>
+                <br>
+              </div>
+            </div>
+        </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </section><!-- End Testimonials Section -->
+
+
+
+
+</main><!-- End #main -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+
+    
+
+
+
+{% endblock %}
+

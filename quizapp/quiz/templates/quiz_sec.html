@@ -1,0 +1,115 @@
+{% extends "./base/base.html" %} 
+{% load static %}
+
+{% block nav %}
+<ul>
+  <li><a href={% url "homepage" %}>Home</a></li>
+  {% if user.is_authenticated %}
+  <li><a class='active' href={% url "pre_quiz" %}>Quiz</a></li>
+  <li><a href={% url "logout" %}>Logout</a></li>
+  {% else %}
+  <li><a href={% url "login" %}>Login</a></li>
+  <li><a href={% url 'register' %}>Register</a></li>
+  {% endif %}
+</ul>
+{% endblock  %}
+
+
+{% block main %}
+
+<main id="main">
+  <!-- ======= Quiz Section ======= -->
+  <section class="section border-top border-bottom text-center">
+    <div class="container">
+      <div class="card mx-auto col-lg-8" >
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item mx-auto">
+              <p id='question_num'>Question: {{question_number}}/{{total_questions}}</p>
+            </li>
+          </ul>
+        </div>
+          <div class="card-body" >
+            <h5 class="text-center card-title">{{question.text}}</h5>
+            <br>
+            <form action='#' method='post' id='reply' > {% csrf_token %}
+              <div class='row custom-control btn-group-vertical' role='group' name='answer' id='answer' style="padding-top: 20px; padding-bottom: 20px;" aria-label="Vertical radio toggle button group">
+                <div>
+                  <input class="btn-check" type="radio" name="exampleRadios" id="Radios1" value="{{ question.option1}}">
+                  <label class="btn btn-outline-primary" for="Radios1">{{question.option1}}</label>
+                </div>
+                <br>
+                <div>
+                  <input class="btn-check" type="radio" name="exampleRadios" id="Radios2" value="{{question.option2}}">
+                  <label class="btn  btn-outline-primary" for="Radios2">{{question.option2}}</label>
+                </div>
+                <br>
+                <div>
+                  <input class="btn-check" type="radio" name="exampleRadios" id="Radios3" value="{{question.option3}}" >
+                  <label class="btn btn-outline-primary" for="Radios3">{{question.option3}}</label>
+                </div>
+                <br>
+                <div>
+                  <input class="btn-check" type="radio" name="exampleRadios" id="Radios4" value="{{question.option4}}">
+                  <label class="btn btn-outline-primary" for="Radios4">{{question.option4}}</label>
+                  <br>
+                  <br>
+                  
+                  <div>
+                    <input type='hidden' name='index' defaultva value="{{question_number}}"/>
+                    <input type='hidden' name='score' value="{{score}}"/>
+                    <a href={% url "quiz" %}  method='POST'><button type='Submit' id='next'  class="btn btn-primary">Submit</button><a>
+                  </div>
+            </form>
+                <br>
+              </div>
+            </div>
+            <div class="progress" >
+              <div class="progress-bar" id="blips" role="progressbar" style="width: 100%;">
+                <span class="sr-only"></span>
+              </div>
+          </div>
+        </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Testimonials Section -->
+
+
+</main><!-- End #main -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script> 
+    const progressBar = document.getElementById('blips')
+    const progstyle = getComputedStyle(progressBar)
+    const width = parseFloat(progstyle.getPropertyValue('width'))
+    const ten_perc_width = 0.01*width
+    var prog_ = width
+    var selected = $("#answer input[type='radio'].btn-check:checked").val();
+
+    setInterval(()=> {
+      if(prog_>ten_perc_width){
+        prog_ -= ten_perc_width
+        progressBar.style.setProperty('width', String(prog_)+'px')
+      }
+      else{
+        progressBar.style.setProperty('width', '0px')
+        document.getElementById('next').click()
+
+      }
+      },100)
+
+    
+</script>
+
+    
+
+    
+
+
+
+{% endblock %}
+
